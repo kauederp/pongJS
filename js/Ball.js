@@ -1,5 +1,5 @@
 class Ball{
-	constructor(x,y,r,color,spd=3,spdx=0,collided=false,pontos=0){
+	constructor(x,y,r,color,spd=3,spdx=0,collided=false){
 		this.x = x;
 		this.y = y;
 		this.r = r;
@@ -7,7 +7,6 @@ class Ball{
 		this.spd = spd;
 		this.spdx = spdx;
 		this.collided = collided;
-		this.pontos = pontos;
 	}
 	draw(){
 		ctx.fillStyle = this.color
@@ -33,19 +32,17 @@ class Ball{
 		}
 		console.log(debug)
 	}
-	getPontos = ()=>{
-		return this.pontos
-	}
-	collision = (player,tela)=>{
-		if(	player.x < this.x-this.r && 
-			this.x+this.r <player.x + player.w &&
-			player.y < this.y+this.r && 
-			this.y+this.r <player.y + player.w){
+	collision(player,player2,tela){
+		if(	player.x < this.x-this.r && this.x+this.r <player.x + player.w && player.y < this.y+this.r && this.y+this.r <player.y + player.h || 
+			player2.x < this.x-this.r && this.x+this.r <player2.x + player2.w && player2.y < this.y+this.r && this.y+this.r <player2.y + (3*player2.h))
+		{
 				this.spdx = this.spdx +Math.random() < 0.5 ? -1 : 1
 				this.x = this.x + this.spdx
 				this.spd = this.spd * -1
 				this.collided = true
 		}
+
+
 		if( this.x-this.r < 0){
 				
 				this.spdx = this.spdx * -1
@@ -57,16 +54,16 @@ class Ball{
 			this.collided = true
 		}
 		if(this.y-this.r < 0){
-				this.spd = this.spd * -1
-				this.pontos++
-				this.collided = true
-				this.y = this.y + this.r
+			this.spd = this.spd * -1
+			this.collided = true
+			this.y = this.y + this.r
+			player.pontos++
 		}
 		if(this.y+this.r > tela.height){
 			this.spd = this.spd * -1
-			this.pontos--
 			this.collided = true
 			this.y = this.y - this.r
+			player2.pontos++
 		}
 	}
 }
